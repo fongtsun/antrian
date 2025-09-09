@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Antrian Pemeriksaan Kesehatan Gratis</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header>
+    <img src="/logo.png" alt="Logo GSJA EL-ROI" />
+    <h1>Antrian Pemeriksaan Kesehatan Gratis</h1>
+    <div class="datetime">
+      <div id="date" class="date"></div>
+      <div id="time" class="time"></div>
+      <div id="status" style="font-size:12px;margin-top:4px;">Menghubungkan...</div>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel">
+      <div class="loket-title loket-darah">MEJA CEK DARAH</div>
+      <div id="numberDarah" class="big-number">-</div>
+    </section>
+    <section class="panel">
+      <div class="loket-title loket-dokter">MEJA DOKTER</div>
+      <div id="numberDokter" class="big-number">-</div>
+    </section>
+  </main>
+
+  <footer>(c) Departemen Sosial GSJA EL-ROI</footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>

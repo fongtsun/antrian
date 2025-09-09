@@ -1,0 +1,14 @@
+name = "antrian-app"
+main = "worker.js"
+compatibility_date = "2024-10-01"
+
+[vars]
+APP_TITLE = "Antrian Pemeriksaan Kesehatan Gratis"
+
+[[durable_objects.bindings]]
+name = "QUEUE_ROOM"
+class_name = "QueueRoom"
+
+[[migrations]]
+tag = "v1"
+new_classes = ["QueueRoom"]

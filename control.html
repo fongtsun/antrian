@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kontrol Antrian - Semua</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <style> main{display:block} .panel{max-width:900px;margin:12px auto} </style>
+</head>
+<body>
+  <header>
+    <img src="/logo.png" alt="Logo" />
+    <h1>Kontrol Antrian</h1>
+    <div class="datetime">
+      <div id="date" class="date"></div>
+      <div id="time" class="time"></div>
+      <div id="status" style="font-size:12px;margin-top:4px;">Menghubungkan...</div>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel">
+      <div class="loket-title">MEJA CEK DARAH</div>
+      <div id="numberDarah" class="big-number">-</div>
+      <div class="controls">
+        <button onclick="sendAction('callDarah')">Panggil</button>
+        <button onclick="sendAction('recallDarah')">Panggil Ulang</button>
+        <button class="warn" onclick="sendAction('resetDarah')">Reset</button>
+        <div class="group">
+          <label>Set mulai: <input id="startDarah" type="number" min="0" value="1" /></label>
+          <button onclick="sendAction('setStart',{startDarah: parseInt(document.getElementById('startDarah').value)||1})">Set</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="loket-title">MEJA DOKTER</div>
+      <div id="numberDokter" class="big-number">-</div>
+      <div class="controls">
+        <button onclick="sendAction('callDokter')">Panggil</button>
+        <button onclick="sendAction('recallDokter')">Panggil Ulang</button>
+        <button class="warn" onclick="sendAction('resetDokter')">Reset</button>
+        <div class="group">
+          <label>Set mulai: <input id="startDokter" type="number" min="0" value="1" /></label>
+          <button onclick="sendAction('setStart',{startDokter: parseInt(document.getElementById('startDokter').value)||1})">Set</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>(c) Departemen Sosial GSJA EL-ROI</footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
