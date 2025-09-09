@@ -260,8 +260,8 @@ function setConnStatus(text){
 }
 
 ws.addEventListener("open", ()=> setConnStatus("🟢 Connected"));
-ws.addEventListener("close", ()=> setConnStatus("🔴 Offline"));
-ws.addEventListener("error", ()=> setConnStatus("🔴 Offline"));
+ws.addEventListener("close", ()=> {setConnStatus("🔴 Offline");scheduleReconnect();});
+ws.addEventListener("error", ()=> {setConnStatus("🔴 Offline");scheduleReconnect();});
 
 ws.addEventListener("message", (evt)=>{
   try{
@@ -312,6 +312,13 @@ function confirmAction(action, payload, message){
   }
 
   if (confirm(msg)) sendAction(action,payload);
+}
+
+function scheduleReconnect(){
+  // coba refresh otomatis setelah 5 detik
+  setTimeout(()=>{
+    location.reload();
+  }, 5000);
 }
 
 function formatTime(d){
