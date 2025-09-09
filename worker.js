@@ -206,6 +206,22 @@ main{flex:1;display:flex;gap:1vw;padding:2vh;box-sizing:border-box;flex-wrap:wra
 .controls input[type=number]{width:90px;padding:.6em;border-radius:8px;border:1px solid #d0d7de}
 footer{text-align:center;padding:1vh;background:#fff;font-weight:700;box-shadow:0 -2px 8px rgba(0,0,0,.08)}
 
+@keyframes blink {
+  0%, 100% {
+    color: crimson;
+    text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+  }
+  50% {
+    color: gold;
+    text-shadow: 0 0 10px red, 0 0 20px yellow;
+  }
+}
+
+.blinking {
+  animation: blink 0.8s ease-in-out 5;
+}
+
+
 @media(max-width:768px){
 header img{height:4vh;width:auto}
 header h1{font-size:5vw;}
@@ -234,10 +250,8 @@ function speak(text, gender="female"){
 }
 
 function renderDisplay(){
-  const elD = document.getElementById("numberDarah");
-  const elK = document.getElementById("numberDokter");
-  if (elD) elD.textContent = state.darah > 0 ? pad3(state.darah) : "-";
-  if (elK) elK.textContent = state.dokter > 0 ? pad3(state.dokter) : "-";
+  updateNumber("numberDarah", state.darah);
+  updateNumber("numberDokter", state.dokter);
 }
 
 function setConnStatus(text){
@@ -255,10 +269,10 @@ ws.addEventListener("message", (evt)=>{
     if (msg.type === "state" && msg.state){
       state = msg.state;
       renderDisplay();
-      if (msg.speak === "callDarah") speak(\`Nomor \${pad3(state.darah)}. Silakan ke meja cek darah.\`, "female");
-      if (msg.speak === "recallDarah") speak(\`Panggilan ulang. Nomor \${pad3(state.darah)}. Silakan ke meja cek darah.\`, "female");
-      if (msg.speak === "callDokter") speak(\`Nomor \${pad3(state.dokter)}. Silakan ke meja dokter.\`, "male");
-      if (msg.speak === "recallDokter") speak(\`Panggilan ulang. Nomor \${pad3(state.dokter)}. Silakan ke meja dokter.\`, "male");
+      if (msg.speak === "callDarah") { speak(\`Nomor \${pad3(state.darah)}. Silakan ke meja cek darah.\`, "female");triggerBlink("numberDarah");}
+      if (msg.speak === "recallDarah") { speak(\`Panggilan ulang. Nomor \${pad3(state.darah)}. Silakan ke meja cek darah.\`, "female");triggerBlink("numberDarah");}
+      if (msg.speak === "callDokter") { speak(\`Nomor \${pad3(state.dokter)}. Silakan ke meja dokter.\`, "male");triggerBlink("numberDokter");}
+      if (msg.speak === "recallDokter"){ speak(\`Panggilan ulang. Nomor \${pad3(state.dokter)}. Silakan ke meja dokter.\`, "male");triggerBlink("numberDokter");}
     }
   }catch(e){}
 });
@@ -307,6 +321,27 @@ function formatTime(d){
   return hh+":"+mm+":"+ss;
 }
 
+function triggerBlink(id){
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  el.classList.remove("blinking"); 
+  void el.offsetWidth; // restart animasi jika dipanggil cepat
+
+  el.classList.add("blinking");
+  setTimeout(()=> el.classList.remove("blinking"), 4000); // hapus class setelah selesai
+}
+
+function updateNumber(id, value){
+  const el = document.getElementById(id);
+  if (!el) return;
+  const newVal = value > 0 ? pad3(value) : "-";
+  if (el.textContent !== newVal) {
+    el.textContent = newVal;
+  }
+}
+
+
 function updateClock(){
   const now = new Date();
   const hari = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"][now.getDay()];
@@ -317,7 +352,9 @@ function updateClock(){
   if (timeEl) timeEl.textContent = formatTime(now);
 }
 setInterval(updateClock, 1000); updateClock();`
+
 };
+
 
 const BINARY_ASSETS = {
   "logo.png": new Uint8Array([
